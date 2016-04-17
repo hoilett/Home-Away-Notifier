@@ -28,10 +28,18 @@ const uint8_t knockSensor = A0;
 const uint16_t knockThreshold = 100;
 boolean isHome = false;
 
+const uint8_t isHomeLED = 2;
+const uint8_t isAwayLED = 3;
+const uint8_t isHomeSwitch = 4;
+
 void setup()
 {
   Serial.begin(115200);
   pinMode(LEDPin, OUTPUT);   //The LED of the Arduino
+
+  pinMode(isHomeLED, OUTPUT);
+  pinMode(isAwayLED, OUTPUT);
+  pinMode(isHomeSwitch, INPUT);
 
   lcd.begin (20,4);  //Size of LCD
  
@@ -47,9 +55,11 @@ void loop()
   {
     printKnockMessage();
     
-    if (isHome)
+    if (isHome) printIsHomeMessage();
+    else
     {
-      
+      printIsAwayMessage();
+      sendAwayNotifier();
     }
   }
 }
@@ -64,6 +74,44 @@ void printKnockMessage()
   lcd.print("Let me check if");
   lcd.setCursor(0,1);
   lcd.print("Orlando's home");
+}
+
+void printIsHomeMessage();
+{
+  Serial.println("Orlando's Home!");
+  Serial.println("He's coming.");
+
+  lcd.clear();
+  lcd.setCursor(0,0),
+  lcd.print("Orlando's Home!");
+  lcd.setCursor(0,1);
+  lcd.print("He's coming.");
+}
+
+void printIsAwayMessage()
+{
+  Serial.println("Orlando's Away!");
+
+  lcd.clear();
+  lcd.setCursor(0,0),
+  lcd.print("Orlando's Away!");
+
+  delay(1500);
+
+  Serial.println("I will tell him");
+  Serial.println("that you're here.");
+
+  lcd.clear();
+  lcd.setCursor(0,0),
+  lcd.print("I will tell him");
+  lcd.setCursor(0,1);
+  lcd.print("that you're here.");
+}
+
+
+void sendAwayNotifier()
+{
+  println("someone's at the door");
 }
 
 
