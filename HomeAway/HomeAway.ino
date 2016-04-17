@@ -25,6 +25,8 @@ int n = 1;
 LiquidCrystal_I2C     lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
 
 const uint8_t knockSensor = A0;
+const uint16_t knockThreshold = 100;
+boolean isHome = false;
 
 void setup()
 {
@@ -41,6 +43,27 @@ void setup()
 
 void loop()
 {
+  if (analogRead(knockSensor) > knockThreshold)
+  {
+    printKnockMessage();
+    
+    if (isHome)
+    {
+      
+    }
+  }
+}
+
+void printKnockMessage()
+{
+  Serial.println("Let me check if");
+  Serial.println("Orlando's home");
+
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Let me check if");
+  lcd.setCursor(0,1);
+  lcd.print("Orlando's home");
 }
 
 
